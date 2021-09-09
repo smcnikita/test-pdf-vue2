@@ -1,73 +1,37 @@
 <template>
   <div id="app">
-    <div class="main">
-      <header-items/>
-      <task-field @onAddTask="onAddTask"/>
-
-      <div class="main__list">
-        <template v-if="listTasks.length === 0">
-          <h2>Задач нет :)</h2>
-        </template>
-        <template v-else>
-          <list-item
-              v-for="(task, index) in listTasks"
-              :key="index"
-              :text="task.text"
-              :checked="task.checked"
-              :indexTask="index"
-              @onToggleCompleted="onToggleCompleted(index)"
-              @removeTasks="removeTasks(index)"
-          />
-        </template>
-      </div>
+    <h2>Количество страниц: {{ pageCount }}</h2>
+    <div class="pdf-content">
+      <pdf src="./lorem-ipsum.pdf" @num-pages="pageCount = $event"></pdf>
     </div>
   </div>
 </template>
 
 <script>
-import HeaderItems from "@/components/Header/HeaderItems";
-import TaskField from "@/components/TaskField";
-import ListItem from "@/components/ListItem";
+import pdf from 'vue-pdf';
 
 export default {
   name: 'App',
   components: {
-    HeaderItems,
-    TaskField,
-    ListItem
+    pdf
   },
   data() {
     return {
-      listTasks: []
+      pageCount: 0
     }
   },
-  methods: {
-    onToggleCompleted(indexTask) {
-      this.listTasks[indexTask].checked = !this.listTasks[indexTask].checked;
-    },
-    removeTasks(indexTask) {
-      this.listTasks.splice(indexTask, 1);
-    },
-    onAddTask(text) {
-      this.listTasks.push({
-        text: text,
-        checked: false
-      });
-    }
-  }
+  methods: {}
 }
 </script>
 
 <style>
 @import "./assets/css/style.min.css";
-
-.main {
-  padding-bottom: 70px;
-}
-
-h2 {
-  color: #cecece;
-  text-align: center;
-  margin-top: 50px;
+.pdf-content {
+  width: 600px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>
